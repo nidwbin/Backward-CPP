@@ -22,6 +22,10 @@ Tensor::Tensor() {
     this->length = 0;
 }
 
+int Tensor::size() const {
+    return this->length;
+}
+
 Tensor Tensor::zero_like(Tensor source) {
     Tensor t(source.shape);
     return t;
@@ -123,14 +127,22 @@ float &Tensor::operator[](int index) {
     }
 }
 
+int check_index(int index, int range) {
+    if (index < range) {
+        return index;
+    } else {
+        throw std::out_of_range("Tensor operator () out of range!");
+    }
+}
+
 float &Tensor::operator()(int len, ...) {
     assert(len == shape.size());
     int index;
     va_list args;
     va_start(args, len);
-    index = va_arg(args, int);
+    index = check_index(va_arg(args, int), shape[0]);
     for (int i = 1; i < len; ++i) {
-        index = index * shape[i] + va_arg(args, int);
+        index = index * shape[i] + check_index(va_arg(args, int), shape[i]);
     }
     va_end(args);
     return this->operator[](index);
@@ -138,11 +150,41 @@ float &Tensor::operator()(int len, ...) {
 
 float &Tensor::operator()(std::vector<int> &index) {
     assert(index.size() == shape.size());
-    int ind = index[0];
+    int ind = check_index(index[0], shape[0]);
     for (int i = 1; i < shape.size(); ++i) {
-        ind = ind * shape[i] + index[i];
+        ind = ind * shape[i] + check_index(index[i], shape[i]);
     }
     return this->operator[](ind);
+}
+
+Tensor &Tensor::operator+(Tensor &tensor) {
+    assert(this->length == tensor.length);
+    for (int i = 0; i < this->length; ++i) {
+        this->data[i] += tensor.data[i];
+    }
+    return *this;
+}
+
+Tensor &Tensor::operator+(float number) {
+    for (int i = 0; i < this->length; ++i) {
+        this->data[i] += number;
+    }
+    return *this;
+}
+
+Tensor &Tensor::operator-(Tensor &tensor) {
+    assert(this->length == tensor.length);
+    for (int i = 0; i < this->length; ++i) {
+        this->data[i] -= tensor.data[i];
+    }
+    return *this;
+}
+
+Tensor &Tensor::operator-(float number) {
+    for (int i = 0; i < this->length; ++i) {
+        this->data[i] -= number;
+    }
+    return *this;
 }
 
 Tensor &Tensor::operator*(Tensor &tensor) {

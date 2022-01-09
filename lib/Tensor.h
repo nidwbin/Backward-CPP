@@ -13,7 +13,6 @@ class Tensor {
 private:
     int length;
     std::vector<float> data;
-
     void mul_loop(Tensor &, Tensor &, int, std::vector<int> &, std::vector<int> &, std::vector<int> &);
 
 public:
@@ -24,6 +23,8 @@ public:
     explicit Tensor(std::vector<int> &);
 
     Tensor();
+
+    int size() const;
 
     static Tensor zero_like(Tensor);
 
@@ -46,6 +47,14 @@ public:
     float &operator()(int, ...);
 
     float &operator()(std::vector<int> &);
+
+    Tensor &operator+(Tensor &);
+
+    Tensor &operator+(float);
+
+    Tensor &operator-(Tensor &);
+
+    Tensor &operator-(float);
 
     Tensor &operator*(Tensor &);
 
