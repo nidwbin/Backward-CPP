@@ -21,18 +21,18 @@ Linear::Linear(int in_size, int out_size, float learn_rate) {
 
 void Linear::update_weight(Tensor &back_grid) {
     Tensor input = this->input_module ? this->input_module->output : this->input_tensor;
-    for (int i = 0; i < this->weight.shape[0]; ++i) {
-        for (int j = 0; j < this->weight.shape[1]; ++j) {
-            this->weight(2, i, j) = this->weight(2, i, j) + this->lr * back_grid[j] * input[i];
+    for (int i = 0; i < this->weight.shape()[0]; ++i) {
+        for (int j = 0; j < this->weight.shape()[1]; ++j) {
+            this->weight(2, i, j) = this->weight(2, i, j) + this->lr * back_grid(2, 0, j) * input(2, 0, i);
         }
     }
 }
 
 void Linear::solve_grid(Tensor &back_grid) {
     this->grid = Tensor::zero_like(this->input_module ? this->input_module->output : this->input_tensor);
-    for (int i = 0; i < this->weight.shape[0]; ++i) {
-        for (int j = 0; j < this->weight.shape[1]; ++j) {
-            this->grid[i] += this->weight(2, i, j) * back_grid[j];
+    for (int i = 0; i < this->weight.shape()[0]; ++i) {
+        for (int j = 0; j < this->weight.shape()[1]; ++j) {
+            this->grid[i] += this->weight(2, i, j) * back_grid(2, 0, j);
         }
     }
 }

@@ -6,14 +6,14 @@
 #include "MSE.h"
 
 MSE::MSE() {
-    this->require_grid = true;
+    this->require_grid = false;
 }
 
 void MSE::solve_grid() {
 }
 
 void MSE::forward(Module *predict, Tensor &target) {
-    assert(target.size() == predict->output.size());
+    assert(target.shape() == predict->output.shape());
     std::vector<int> shape = {1, 1};
     this->input_module = predict;
     this->output = Tensor(shape);

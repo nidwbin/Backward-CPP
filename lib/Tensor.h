@@ -11,12 +11,12 @@
 
 class Tensor {
 private:
-    int length;
     std::vector<float> data;
+    std::vector<int> _shape_;
+
     void mul_loop(Tensor &, Tensor &, int, std::vector<int> &, std::vector<int> &, std::vector<int> &);
 
 public:
-    std::vector<int> shape;
 
     Tensor(std::vector<int> &, float);
 
@@ -26,15 +26,15 @@ public:
 
     int size() const;
 
-    static Tensor zero_like(Tensor);
+    static Tensor zero_like(Tensor &);
 
-    static Tensor ones_like(Tensor);
+    static Tensor ones_like(Tensor &);
 
-    Tensor &dot(Tensor);
+    Tensor dot(Tensor &);
 
-    Tensor &dot(float);
+    Tensor dot(float);
 
-    Tensor &div(float);
+    Tensor div(float);
 
     void update(std::vector<int> &, float);
 
@@ -42,25 +42,27 @@ public:
 
     void reshape(std::vector<int> &);
 
+    std::vector<int> shape();
+
     float &operator[](int);
 
     float &operator()(int, ...);
 
     float &operator()(std::vector<int> &);
 
-    Tensor &operator+(Tensor &);
+    Tensor operator+(Tensor);
 
-    Tensor &operator+(float);
+    Tensor operator+(float);
 
-    Tensor &operator-(Tensor &);
+    Tensor operator-(Tensor);
 
-    Tensor &operator-(float);
+    Tensor operator-(float);
 
-    Tensor &operator*(Tensor &);
+    Tensor operator*(Tensor);
 
-    Tensor &operator*(float);
+    Tensor operator*(float);
 
-    Tensor &operator/(float);
+    Tensor operator/(float);
 
 };
 

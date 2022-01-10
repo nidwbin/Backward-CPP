@@ -1,6 +1,7 @@
 //
 // Created by nidwbin on 2022/1/7.
 //
+#include <cassert>
 #include "cmath"
 #include "Sigmoid.h"
 
@@ -9,12 +10,7 @@ Sigmoid::Sigmoid() {
 }
 
 void Sigmoid::solve_grid(Tensor &back_grid) {
-    this->grid = this->output;
-    Tensor one = Tensor::ones_like(this->output);
-    one = one - this->output;
-    for (int i = 0; i < this->grid.size(); ++i) {
-        this->grid[i] = this->output[i] * one[i] * back_grid[i];
-    }
+    this->grid = this->output * (Tensor::ones_like(this->output) - this->output) * back_grid;
 }
 
 void Sigmoid::backward(Tensor &back_grid) {

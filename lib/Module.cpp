@@ -43,12 +43,13 @@ void Module::backward() {
     }
 }
 
-void Module::solve_grid() {
-
-}
 
 void Module::backward(Tensor &back_grid) {
     this->backward();
+}
+
+void Module::solve_grid() {
+
 }
 
 void Module::forward(Tensor &input) {

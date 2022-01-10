@@ -73,7 +73,7 @@ void generate_data(Tensor &data) {
     printf("Done\n");
 }
 
-float get_predict(float predict) { return predict > 0.5 ? 1 : 0; }
+float get_predict(float predict, float threshold = 0.5) { return predict >= threshold ? 1 : 0; }
 
 void train(int run_mode, int start, int end_epoch, float end_loss, Tensor &data, Tensor &target, Tensor &data_to_input,
            Linear &hidden, Sigmoid &sigmoid_hidden, Linear &output, Sigmoid &sigmoid_output, MSE &loss,
@@ -174,7 +174,7 @@ int main(int argc, char **argv) {
                 break;
             default: {
                 printf("Error parameter. Only accept 0 or 1.\n");
-                return 0;
+                return -1;
             }
         }
     }
